@@ -5,7 +5,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-web/price-list/node_modules
+price-list-ui/node_modules
+price-list-ui/build
 
 ### STS ###
 .apt_generated
