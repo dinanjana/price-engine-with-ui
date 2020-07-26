@@ -1,13 +1,21 @@
 #Pull base image
-FROM openjdk:11
+FROM openjdk:8 AS BUILD_IMAGE
 
-# Add build
-COPY build/libs/price-engine-0.0.1-SNAPSHOT.jar /app/
+# Create app directory
+RUN mkdir -p /usr/src/price-engine
+WORKDIR /usr/src/price-engine
 
-# Add docker image labels
-LABEL sysco.paastry.meta.team.release.version="TEST" sysco.paastry.meta.team.release.revision="TEST_IR1"
+COPY gradle/wrapper ./gradle/wrapper/
+COPY gradlew ./
+COPY build.gradle ./
+COPY src ./src/
+# download dependencies
+RUN chmod +x gradlew
+RUN ./gradlew clean build
 
-#Expose port
-EXPOSE 8082
+FROM openjdk:8-jre
+WORKDIR /usr/
+COPY --from=BUILD_IMAGE /usr/src/price-engine/build/libs/price-engine-0.0.1-SNAPSHOT.jar .
 
-ENTRYPOINT ["java","-jar", "app/sla-api-0.0.1-SNAPSHOT.jar"]
+EXPOSE 9090
+CMD ["java","-jar","price-engine-0.0.1-SNAPSHOT.jar"]
