@@ -26,6 +26,8 @@ Spring boot and React js implemetation of a simple price engine service
 7. Run `java -jar build/libs/price-engine-0.0.1-SNAPSHOT.jar` to launch the service. Service will listen on 9090 port 
 8. Go to `http://localhost:9090/`
 
+Requires postgres db running on the application server host listening to 5432. Or change value for spring.datasource.url in application properties as you like
+
 ## Tests
 Run `./gradlew test`
 
